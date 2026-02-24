@@ -1,0 +1,41 @@
+.quick-filter-head {
+  position: relative;
+  padding-right: 3.3em !important;
+}
+
+.quick-filter-config {
+  position: absolute;
+  top: 0;
+  margin-left: .3em;
+  left: calc(100% - 3em);
+}
+
+.quick-filter-config .sort-order {
+  vertical-align: top;
+  padding-right: .1em;
+}
+
+.quick-filter-config .sort-order, .quick-filter-config .common-config {
+  display: inline-block;
+}
+
+.quick-filter-config .column-order, .quick-filter-config .conjunction-operator {
+  font-size: .5em;
+  display: block;
+  text-align: left;
+}
+
+.quick-filter-config .conjunction-operator {
+  text-transform: uppercase;
+  font-family: sans;
+}
+
+quick-filter {
+  position: absolute;
+  display: block;
+}
+
+.quick-filter-managed tr:has(.text-filtered, .value-filtered),
+.quick-filter-managed tr.filtered {
+  display: none;
+}

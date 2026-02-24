@@ -1,0 +1,140 @@
+
+.quick-filter {
+  --border-color: black;
+  --bg-color: white;
+  --text-color: black;
+  --filtered-color: rgba(0, 0, 0, .5)
+}
+
+@media (prefers-color-scheme: dark) {
+  .quick-filter {
+    --border-color: lightgrey;
+    --bg-color: rgb(50, 50, 50);
+    --text-color: lightgrey;
+    --filtered-color: rgba(211, 211, 211, .5)
+  }
+}
+
+
+.quick-filter {
+  width: 20rem;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  text-align: start;
+  font-weight: normal;
+  color: var(--text-color);
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 40rem) {
+  .quick-filter {
+    --offset: 5px;
+    top: var(--offset);
+    left: var(--offset);
+    width: calc(100vw - 2 * var(--offset));
+  }
+}
+
+
+.filter-value-item.filtered {
+  color: var(--filtered-color);
+}
+
+.filter-value-item.filtered:has(input:checked) {
+  color: var(--text-color);
+}
+
+
+.quick-filter.closed {
+  display: none;
+}
+
+.filter-values {
+  padding: 0;
+  margin: 0;
+}
+
+.filter-values li {
+  list-style-type: none;
+}
+
+.filter-by-value {
+  max-height: 10em;
+  width: calc(100% - .4em);
+  overflow: auto;
+}
+
+.quick-filter > .heading, .quick-filter > fieldset {
+  margin: .25em;
+}
+
+.quick-filter .heading .title, .quick-filter .heading .controls {
+  display: inline-block;
+  width: 50%;
+}
+
+input[type="button"],
+input[type="radio"],
+input[type="checkbox"],
+.radio-label,
+.check-label {
+  cursor: pointer;
+}
+
+.heading .controls {
+  text-align: right;
+}
+
+.heading .title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+
+.sort-direction-controls, .text-filter-type-set {
+  margin-bottom: .5em;
+}
+
+.text-field label,
+.text-filter input {
+  display: inline-block;
+}
+
+
+.text-field label {
+  width: 30%;
+}
+
+.text-field input {
+  width: 70%;
+  box-sizing: border-box;
+}
+
+.filter-by-value {
+  margin: 0 .15em;
+  border: 1px solid var(--border-color);
+}
+
+fieldset {
+  margin: .15em;
+}
+
+.quick-filter-order {
+  margin-top: .5em;
+}
+
+.filter-by-value-divider {
+  width: 100%;
+  border-top: 2px solid var(--border-color);
+  margin-top: 1em;
+}
+
+.filter-by-value-label {
+  margin-left: 1em;
+  display: inline-block;
+  position: relative;
+  top: -.7em;
+  background-color: var(--bg-color);
+  padding: 0 .2em;
+}

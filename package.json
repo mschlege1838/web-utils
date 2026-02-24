@@ -1,0 +1,17 @@
+{
+  "name": "@mschlege1838/web-utils",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "author": "mschlege1838",
+  "type": "module",
+  "scripts": {
+    "build": "node ./frankensteinify.mjs ./src/quick-filter/quick-filter.mjs ./src/datalist-input/datalist-input.mjs"
+  },
+  "devDependencies": {
+    "acorn": "^8.16.0",
+    "html-minifier-next": "^5.1.2",
+    "lightningcss": "^1.31.1",
+    "terser": "^5.46.0"
+  }
+}
