@@ -53,6 +53,7 @@
 .filter-values {
   padding: 0;
   margin: 0;
+  max-width: 16rem;
 }
 
 .filter-values li {
@@ -63,6 +64,8 @@
   max-height: 10em;
   width: calc(100% - .4em);
   overflow: auto;
+  margin: 0 .15em;
+  border: 1px solid var(--border-color);
 }
 
 .quick-filter > .heading, .quick-filter > fieldset {
@@ -109,11 +112,6 @@ input[type="checkbox"],
 .text-field input {
   width: 70%;
   box-sizing: border-box;
-}
-
-.filter-by-value {
-  margin: 0 .15em;
-  border: 1px solid var(--border-color);
 }
 
 fieldset {
