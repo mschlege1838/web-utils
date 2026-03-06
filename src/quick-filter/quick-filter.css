@@ -136,3 +136,25 @@ fieldset {
   background-color: var(--bg-color);
   padding: 0 .2em;
 }
+
+.stats {
+  font-size: .8em;
+  font-family: monospace;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.stats table {
+  border-collapse: collapse;
+  text-align: left;
+  display: inline-table;
+  margin: 0 1em .5em 0;
+}
+
+.stats td {
+  border: 1px solid var(--border-color);
+}
+
+.stats thead th:nth-child(2) {
+  padding-right: .8em;
+}

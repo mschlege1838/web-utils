@@ -401,31 +401,65 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
       throw new TypeError('No column index found');
     }
     
+    const shadowRoot = this.shadowRoot;
+    
+    let countTotalAll = 0, countDistAll = 0,
+        countTotalVisible = 0, countDistVisible = 0,
+        countTotalSel = 0, countDistSel = 0;
+    
     // Get current values
-    const valuesList = this.shadowRoot.querySelector('.filter-values');
+    const valuesList = shadowRoot.querySelector('.filter-values');
     let values = new Map();
     for (const row of table.tBodies[0].rows) {
       const cell = row.cells[columnIndex];
       const visible = cell.checkVisibility();
       
       for (const value of this.getValues(cell)) {
+        
+        ++countTotalAll;
+        if (visible) {
+          ++countTotalVisible;
+        }
+        
         const currentElement = valuesList.querySelector(`.filter-value[value="${quoteEscape(value)}"]`);
         
         if (values.has(value)) {
           const current = values.get(value);
           current.visible = Boolean(Math.max(current.visible, visible));
+          
+          if (current.selected) {
+            ++countTotalSel;
+          }
+          
         } else {
+          const selected = currentElement && currentElement.checked;
+          
+          ++countDistAll;
+          if (selected) {
+            ++countDistSel;
+            ++countTotalSel;
+          }
+          if (visible) {
+            ++countDistVisible;
+          }
+          
           values.set(value, {
             visible: visible,
-            selected: currentElement && currentElement.checked
+            selected: selected
           });
         }
         
       }
     }
     
+    // Update counts
+    shadowRoot.querySelector('.count-distinct-selected').textContent = countDistSel || countDistVisible;
+    shadowRoot.querySelector('.count-distinct-all').textContent = countDistAll;
+    shadowRoot.querySelector('.count-total-selected').textContent = countTotalSel || countTotalVisible;
+    shadowRoot.querySelector('.count-total-all').textContent = countTotalAll;
+    
     const adaptiveInput = this.inputType === 'adaptive';
-    const rawText = this.shadowRoot.querySelector('.text-filter').value;
+    const rawText = shadowRoot.querySelector('.text-filter').value;
     const valuesArr = Array.from(values);
     valuesArr.sort((a, b) => {
       const [aValue, aState] = a;
@@ -593,7 +627,7 @@ export class QuickFilter {
     this.extractors = extractors;
   }
   
-  init() {
+   init() {
     const table = this.table;
     table.classList.add('quick-filter-managed');
     
