@@ -593,7 +593,7 @@ export class QuickFilter {
     this.extractors = extractors;
   }
   
-  async init() {
+  init() {
     const table = this.table;
     table.classList.add('quick-filter-managed');
     
