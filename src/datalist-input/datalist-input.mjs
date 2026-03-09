@@ -1,9 +1,9 @@
 import { SimpleEventDispatcherMixin, WebComponentMixin, loadTemplate } from '../util.mjs';
 
-const template = await loadTemplate(import.meta.resolve('./datalist-input.html'));
+const datalistInputTemplate = await loadTemplate(import.meta.resolve('./datalist-input.html'));
 
 customElements.define('datalist-input', class extends WebComponentMixin(
-    SimpleEventDispatcherMixin(HTMLElement, ['match']), template, true, [
+    SimpleEventDispatcherMixin(HTMLElement, ['match']), datalistInputTemplate, true, [
       { attribute: 'data-base-url', field: 'baseUrl' },
       { attribute: 'size', field: 'size' },
       { attribute: 'value', field: 'value' },
@@ -28,6 +28,7 @@ customElements.define('datalist-input', class extends WebComponentMixin(
   }
   
   set size(value) {
+    this.attributeSync('size', value);
     this.shadowRoot.querySelector('input').size = value;
   }
   
@@ -36,6 +37,7 @@ customElements.define('datalist-input', class extends WebComponentMixin(
   }
   
   set value(value) {
+    this.attributeSync('value', value);
     const input = this.shadowRoot.querySelector('input');
     if (input.value != value) {
       input.value = value;
