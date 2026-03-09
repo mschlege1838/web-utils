@@ -188,23 +188,16 @@ export async function replaceImportImg(fname) {
   const astRoot = new Parse5Node(parse(await fs.readFile(fname, { encoding: 'utf8' })));
   
   const templateProcessor = astRoot.getFirstByTagName('template').content;
-
-  let idCounter = 0;
+  
   for (const importImgNode of templateProcessor.getElementsByTagName('import-img')) {
     const srcPath = path.join(path.dirname(fname), importImgNode.getAttribute('data-import-src'));
     const data = (await fs.readFile(srcPath)).toString('base64');
     const mimeType = getMimeTypeFromExt(path.extname(srcPath));
-    const id = (importImgNode.getAttribute('id') || 'importImg' + idCounter++).replaceAll(/'/g, "\\'");
     
     const imgNode = createElement('img');
-    imgNode.setAttribute('id', id);
+    imgNode.setAttribute('src', `data:${mimeType};base64,${data}`);
+    imgNode.setAttribute('class', importImgNode.getAttribute('class'));
     importImgNode.parentNode.insertBefore(imgNode, importImgNode);
-    
-    const scriptNode = createElement('script');
-    scriptNode.appendChild(createTextNode(`
-    document.getElementById('${id}').src = URL.createObjectURL(new Blob([Uint8Array.fromBase64('${data}')], { type: '${mimeType}' }));
-    `));
-    importImgNode.parentNode.insertBefore(scriptNode, importImgNode);
     
     importImgNode.parentNode.removeChild(importImgNode);
   }
