@@ -158,3 +158,22 @@ fieldset {
 .stats thead th:nth-child(2) {
   padding-right: .8em;
 }
+
+.selection-controls {
+  position: relative;
+  top: -.5em;
+  margin-left: 1em;
+}
+
+.selection-control {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  cursor: pointer;
+  background-color: lightgrey;
+  padding: .1em;
+}
+
+.selection-control:first-child {
+  margin-right: .5em;
+}

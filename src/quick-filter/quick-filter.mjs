@@ -3,7 +3,7 @@ import { SimpleEventDispatcherMixin, hasAnyClass, collapseWhitespace, naturalCom
         convertPrimitive, removeChildren, quoteEscape, WebComponentMixin, loadTemplate } from '../util.mjs';
 import quickFilterStylesheet from './quick-filter.css' with { type: 'css' };
 import quickFilterExternalStylesheet from './quick-filter-ext.css' with { type: 'css' };
-
+import { initImportImg } from '../import-img/import-img.mjs';
 
 
 document.adoptedStyleSheets.push(quickFilterExternalStylesheet);
@@ -212,6 +212,12 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
     if (configurationDisplay) {
       configurationDisplay.addEventListener('click', this);
     }
+    
+    initImportImg(rootNode, import.meta.url);
+    
+    for (const selectionControl of rootNode.querySelectorAll('.selection-control')) {
+      selectionControl.addEventListener('click', this);
+    }
   }
   
   disconnectedCallback() {
@@ -252,6 +258,10 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
     if (configurationDisplay) {
       configurationDisplay.removeEventListener('click', this);
     }
+    
+    for (const selectionControl of rootNode.querySelectorAll('.selection-control')) {
+      selectionControl.removeEventListener('click', this);
+    }
   }
   
   handleEvent(event) {
@@ -266,6 +276,14 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
         hasAnyClass(event.target, 'cooperation-operator') && event.target.checked ||
         hasAnyClass(event.target, 'case-sensitive')
     ) {
+      this.updateConfigDisplay();
+      this.emitEvent('paramschange');
+    } else if (hasAnyClass(event.target, 'selection-control')) {
+      if (hasAnyClass(event.target, 'select-all')) {
+        this.selectAll();
+      } else {
+        this.selectFilter();
+      }
       this.updateConfigDisplay();
       this.emitEvent('paramschange');
     } else if (hasAnyClass(event.target, 'quick-filter-close')) {
@@ -427,7 +445,7 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
           const current = values.get(value);
           current.visible = Boolean(Math.max(current.visible, visible));
           
-          if (current.selected) {
+          if (visible && current.selected) {
             ++countTotalSel;
           }
           
@@ -435,11 +453,11 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
           const selected = currentElement && currentElement.checked;
           
           ++countDistAll;
-          if (selected) {
-            ++countDistSel;
-            ++countTotalSel;
-          }
           if (visible) {
+            if (selected) {
+              ++countDistSel;
+              ++countTotalSel;
+            }
             ++countDistVisible;
           }
           
@@ -572,6 +590,30 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
       commonConfig.appendChild(conjunctionDisplay);
     }
     conjunctionDisplay.textContent = (this.hasSortDirection || this.hasFilters) ? this.cooperationOperator : '';
+  }
+  
+  selectAll(query) {
+    this.#doSelect('.filter-value');
+  }
+  
+  selectFilter() {
+    this.#doSelect('.filter-value-item:not(.filtered) .filter-value');
+  }
+  
+  #doSelect(query) {
+    const filterValues = this.shadowRoot.querySelectorAll(query);
+    
+    let allSelected = true;
+    for (const filterValue of filterValues) {
+      if (!filterValue.checked) {
+        allSelected = false;
+        break;
+      }
+    }
+    
+    for (const filterValue of filterValues) {
+      filterValue.checked = !allSelected;
+    }
   }
   
   open() {
