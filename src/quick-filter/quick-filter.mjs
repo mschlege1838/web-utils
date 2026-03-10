@@ -444,7 +444,7 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
           currentElement = valuesList.querySelector(`.filter-value[value="${quoteEscape(value)}"]`);
         } else {
           for (const filterValue of valuesList.querySelectorAll('.filter-value')) {
-            if (!filterValue.value) {
+            if (!filterValue.value || filterValue.value === 'on') {
               currentElement = filterValue;
               break;
             }
