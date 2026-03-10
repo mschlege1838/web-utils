@@ -167,7 +167,11 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
   get selectedFilterValues() {
     const values = new Set();
     for (const input of this.shadowRoot.querySelectorAll('.filter-value:checked')) {
-      values.add(this.convertValue(input.value));
+      let value = input.value;
+      if (value === 'on' && !input.getAttribute('value')) {
+        value = '';
+      }
+      values.add(this.convertValue(value));
     }
     
     return values;
@@ -444,7 +448,7 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
           currentElement = valuesList.querySelector(`.filter-value[value="${quoteEscape(value)}"]`);
         } else {
           for (const filterValue of valuesList.querySelectorAll('.filter-value')) {
-            if (!filterValue.value || filterValue.value === 'on') {
+            if (!filterValue.value || (!filterValue.getAttribute('value') && filterValue.value === 'on')) {
               currentElement = filterValue;
               break;
             }
