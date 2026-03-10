@@ -439,7 +439,17 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
           ++countTotalVisible;
         }
         
-        const currentElement = valuesList.querySelector(`.filter-value[value="${quoteEscape(value)}"]`);
+        let currentElement;
+        if (value) {
+          currentElement = valuesList.querySelector(`.filter-value[value="${quoteEscape(value)}"]`);
+        } else {
+          for (const filterValue of valuesList.querySelector('.filter-value')) {
+            if (!filterValue.value) {
+              currentElement = filterValue;
+              break;
+            }
+          }
+        }
         
         if (values.has(value)) {
           const current = values.get(value);
