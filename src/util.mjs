@@ -514,15 +514,15 @@ export function doSetup(setup) {
 }
 
 export function urlPathJoin() {
-    const parts = []
-    for (let i = 0; i < arguments.length; ++i) {
-        let item = arguments[i];
-        if (!item)
-            continue;
-        item = String(item);
-        if (item.endsWith('/'))
-            item = item.substring(0, item.length - 1);
-        parts.push(item);
-    }
-    return parts.join('/');
+  const parts = [];
+  for (let i = 0; i < arguments.length; ++i) {
+    let item = arguments[i];
+    if (!item)
+      continue;
+    item = String(item);
+    if (item.endsWith('/'))
+      item = item.substring(0, item.length - 1);
+    parts.push(item);
+  }
+  return parts.join('/');
 }
