@@ -402,7 +402,7 @@ customElements.define('quick-filter', class extends WebComponentMixin(SimpleEven
     
     const sortDirection = this.sortDirection;
     if (!sortDirection) {
-      return Number.parseInt(row.getAttribute('data-initial-index')) - Number.parseInt(b.getAttribute('data-initial-index'));
+      return Number.parseInt(row.getAttribute('data-row-index')) - Number.parseInt(b.getAttribute('data-row-index'));
     }
     
     const aValue = this.getValues(rowA.cells[columnIndex]).reduce((v, e) => v + e);
@@ -698,7 +698,7 @@ export class QuickFilter {
       cell.addEventListener('click', this);
     }
     
-    this.initData();
+    this.indexRows();
   }
   
   handleEvent(event) {
@@ -718,10 +718,13 @@ export class QuickFilter {
     return this.getQuickFilterGroups(e => e.hasSortDirection);
   }
   
-  initData() {
+  indexRows() {
     const bodyRows = this.table.tBodies[0].rows;
     for (let i = 0; i < bodyRows.length; ++i) {
-      bodyRows[i].setAttribute('data-initial-index', i);
+      const row = bodyRows[i];
+      if (!row.hasAttribute('data-row-index')) {
+        row.setAttribute('data-row-index', i);
+      }
     }
   }
   
@@ -785,7 +788,7 @@ export class QuickFilter {
         }
       });
     } else {
-      rows.sort((a, b) => Number.parseInt(a.getAttribute('data-initial-index')) - Number.parseInt(b.getAttribute('data-initial-index')));
+      rows.sort((a, b) => Number.parseInt(a.getAttribute('data-row-index')) - Number.parseInt(b.getAttribute('data-row-index')));
     }
     
     removeChildren(dataSection);
