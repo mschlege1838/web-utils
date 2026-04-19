@@ -1,0 +1,71 @@
+.table-updater-managed {
+  --insert-padding: .3em;
+}
+
+.table-updater-managed td .updater-cell, .table-updater-managed th .updater-cell {
+  display: grid;
+  grid-template-areas:
+    "cb  rb  ca"
+    "cb  ct  ca"
+    "cb  ra  ca";
+  grid-template-rows: var(--insert-padding) 1fr var(--insert-padding);
+  grid-template-columns: var(--insert-padding) 1fr var(--insert-padding);
+  
+}
+
+.table-updater-managed .insert-col-before,
+.table-updater-managed .insert-row-before,
+.table-updater-managed .insert-col-after,
+.table-updater-managed .insert-row-after {
+  transition: background-color .5s;
+  text-align: center;
+  font-size: .5em;
+  font-weight: bolder;
+  color: black;
+}
+
+.table-updater-managed .insert-col-before {
+  grid-area: cb;
+}
+
+.table-updater-managed .insert-row-before {
+  grid-area: rb;
+}
+
+.table-updater-managed .insert-col-after {
+  grid-area: ca;
+}
+
+.table-updater-managed .insert-row-after {
+  grid-area: ra;
+}
+
+.table-updater-managed .cell-content {
+  grid-area: ct;
+}
+
+.table-updater-managed tr:has(.insert-row-before:hover) .insert-row-before,
+.table-updater-managed tr:has(.insert-row-after:hover) .insert-row-after,
+.table-updater-managed .insert-col-before.hovered,
+.table-updater-managed .insert-col-after.hovered {
+  background-color: cyan;
+  
+}
+
+.table-updater-managed tr:has(.insert-row-before:hover) .insert-row-before::before,
+.table-updater-managed tr:has(.insert-row-after:hover) .insert-row-after::before,
+.table-updater-managed .insert-col-before.hovered::before,
+.table-updater-managed .insert-col-after.hovered::before {
+  content: '+';
+  position: relative;
+}
+
+.table-updater-managed tr:has(.insert-row-before:hover) .insert-row-before::before,
+.table-updater-managed tr:has(.insert-row-after:hover) .insert-row-after::before {
+  top: -.2em;
+}
+
+.table-updater-managed .insert-col-before.hovered::before,
+.table-updater-managed .insert-col-after.hovered::before {
+  top: calc(50% - .5em);
+}
